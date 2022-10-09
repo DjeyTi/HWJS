@@ -1,11 +1,11 @@
 import java.util.Stack;
 
 class Node {
-    private Object value; // ключ узла
-    private Node leftChild; // Левый узел потомок
-    private Node rightChild; // Правый узел потомок
+    private Object value;
+    private Node leftChild;
+    private Node rightChild;
 
-    public void printNode() { // Вывод значения узла в консоль
+    public void printNode() {
         System.out.println(" Выбранный узел имеет значение :" + value);
     }
 
@@ -44,39 +44,39 @@ class Node {
 }
 
 class Tree {
-    private Node rootNode; // корневой узел
+    private Node rootNode;
  
-    public Tree() { // Пустое дерево
+    public Tree() {
         rootNode = null;
     }
 
-    public void insertNode(Object value, boolean[] left) { // метод вставки нового элемента
-        Node newNode = new Node(); // создание нового узла
-        newNode.setValue(value); // вставка данных
-        if (rootNode == null) { // если корневой узел не существует
-            rootNode = newNode;// то новый элемент и есть корневой узел
+    public void insertNode(Object value, boolean[] left) {
+        Node newNode = new Node();
+        newNode.setValue(value);
+        if (rootNode == null) {
+            rootNode = newNode;
         }
-        else { // корневой узел занят
-            Node currentNode = rootNode; // начинаем с корневого узла
+        else {
+            Node currentNode = rootNode;
             Node parentNode;
-            while (true) // мы имеем внутренний выход из цикла
+            while (true)
             {
                 parentNode = currentNode;
                 for (int i = 0; i < left.length; i++) {
-                    if (left[i] == true) {   // движение влево?
+                    if (left[i] == true) {
                         parentNode = currentNode;
                         currentNode = currentNode.getLeftChild();
-                        if (currentNode == null){ // если был достигнут конец цепочки,
-                            parentNode.setLeftChild(newNode); //  то вставить слева и выйти из методы
+                        if (currentNode == null){
+                            parentNode.setLeftChild(newNode);
                             return;
                         }
                     }
-                    else { // Или направо?
+                    else {
                         parentNode = currentNode;
                         currentNode = currentNode.getRightChild();
-                        if (currentNode == null) { // если был достигнут конец tnцепочки,
-                            parentNode.setRightChild(newNode);  //то вставить справа
-                            return; // и выйти
+                        if (currentNode == null) {
+                            parentNode.setRightChild(newNode);
+                            return;
                         }
                     }
                 }
@@ -84,30 +84,30 @@ class Tree {
         }
     }
 
-    public void printTree() { // метод для вывода дерева в консоль
-        Stack<Object> globalStack = new Stack<>(); // общий стек для значений дерева
+    public void printTree() {
+        Stack<Object> globalStack = new Stack<>();
         globalStack.push(rootNode);
-        int gaps = 32; // начальное значение расстояния между элементами
+        int gaps = 32;
         boolean isRowEmpty = false;
         String separator = "-----------------------------------------------------------------";
-        System.out.println(separator);// черта для указания начала нового дерева
+        System.out.println(separator);
         while (isRowEmpty == false) {
-            Stack<Object> localStack = new Stack<>(); // локальный стек для задания потомков элемента
+            Stack<Object> localStack = new Stack<>();
             isRowEmpty = true;
             for (int j = 0; j < gaps; j++)
                 System.out.print(' ');
-            while (globalStack.isEmpty() == false) { // покуда в общем стеке есть элементы
-                Node temp = (Node) globalStack.pop(); // берем следующий, при этом удаляя его из стека
+            while (globalStack.isEmpty() == false) {
+                Node temp = (Node) globalStack.pop();
                 if (temp != null) {
-                    System.out.print(temp.getValue()); // выводим его значение в консоли
-                    localStack.push(temp.getLeftChild()); // соохраняем в локальный стек, наследники текущего элемента
+                    System.out.print(temp.getValue());
+                    localStack.push(temp.getLeftChild());
                     localStack.push(temp.getRightChild());
                     if (temp.getLeftChild() != null ||
                             temp.getRightChild() != null)
                         isRowEmpty = false;
                 }
                 else {
-                    System.out.print("__");// - если элемент пустой
+                    System.out.print("__");
                     localStack.push(null);
                     localStack.push(null);
                 }
@@ -115,11 +115,11 @@ class Tree {
                     System.out.print(' ');
             }
             System.out.println();
-            gaps /= 2;// при переходе на следующий уровень расстояние между элементами каждый раз уменьшается
+            gaps /= 2;
             while (localStack.isEmpty() == false)
-                globalStack.push(localStack.pop()); // перемещаем все элементы из локального стека в глобальный
+                globalStack.push(localStack.pop());
         }
-        System.out.println(separator);// подводим черту
+        System.out.println(separator);
     }
 }
 
